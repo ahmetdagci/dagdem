@@ -9,15 +9,17 @@
     tools:context="com.tr.cay.dagdem.views.sale.SummaryActivity">
 
     <ListView
-        android:id="@+id/teaList"
+        android:id="@+id/summarySaleList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         />
 
     <Button
         android:id="@+id/calculateProductPricesButton"
-        android:layout_width="fill_parent"
+        android:layout_below="@id/summarySaleList"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="HESAPLA" />
+        android:layout_weight="0.5"
+        android:text="Yazdır" />
 
 </RelativeLayout>

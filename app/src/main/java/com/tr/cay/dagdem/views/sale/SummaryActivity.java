@@ -25,7 +25,7 @@ public class SummaryActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary);
 
-        final ListView teaListView = (ListView) findViewById(R.id.teaList);
+        final ListView teaListView = (ListView) findViewById(R.id.summarySaleList);
         Button calculateProductPriceButton = (Button)findViewById(R.id.calculateProductPricesButton);
         calculateProductPriceButton.setOnClickListener(new View.OnClickListener()
         {

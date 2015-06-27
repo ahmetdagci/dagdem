@@ -36,7 +36,7 @@ public class OraletTeaActivity extends Activity {
         oraletTeaList.add(new OraletTea("Böğürtlenli"));
         oraletTeaList.add(new OraletTea("Ahududu"));
 
-        final ListView oraletTeaListView = (ListView) findViewById(R.id.teaList);
+        final ListView oraletTeaListView = (ListView) findViewById(R.id.oraletTeaList);
 
         final OraletTeaAdapter oraletTeaAdapter = new OraletTeaAdapter(this, oraletTeaList);
 

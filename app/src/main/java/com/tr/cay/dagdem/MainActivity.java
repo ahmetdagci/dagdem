@@ -41,6 +41,7 @@ public class MainActivity extends Activity
         customerList.add(new Customer("127","Melek Subaşı"));
         customerList.add(new Customer("128","Selim Serdilli"));
         customerList.add(new Customer("129","Halil İbrahim"));
+        customerList.add(new Customer("130","Serap Okumuş"));
 
         searchCustomerList.addAll(customerList);
 
