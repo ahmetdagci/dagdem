@@ -13,4 +13,8 @@
     <string name="loan_view_button">Müşteri Borcu Görüntüle</string>
     <string name="sales_history_view_button">Satış Geçmişi Görüntüle</string>
     <string name="title_activity_tea">TeaActivity</string>
+
+
+    <string name="action_search">Ara</string>
+
 </resources>

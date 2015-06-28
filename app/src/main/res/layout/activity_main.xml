@@ -10,14 +10,23 @@
     android:layout_height="fill_parent"
     android:focusable="true"
     android:orientation="vertical"
+    android:clickable="true"
     android:focusableInTouchMode="true">
-
 
 <EditText
         android:id="@+id/searchBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="15dp"
+        android:layout_centerVertical="true"
+        android:ellipsize="start"
+        android:gravity="center"
+        android:background="@drawable/edit_text_design"
+        android:hint="Müşteri Ara.."
+        android:inputType="textVisiblePassword"
         android:maxLines="1"/>
 
 
