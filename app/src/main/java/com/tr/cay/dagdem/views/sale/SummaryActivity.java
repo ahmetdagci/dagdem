@@ -1,6 +1,6 @@
 package com.tr.cay.dagdem.views.sale;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +16,7 @@ import com.tr.cay.dagdem.wrapper.TeaAdapterWrapper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SummaryActivity extends ActionBarActivity
+public class SummaryActivity extends Activity
 {
 
     @Override
