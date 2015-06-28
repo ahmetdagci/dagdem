@@ -3,7 +3,7 @@
     tools:context=".MainActivity">
 
     <item android:id="@+id/action_search"
-        android:icon="@drawable/radio_on"
+        android:icon="@drawable/ic_action_search"
         android:title="@string/action_search"
         android:showAsAction="ifRoom"/>
 

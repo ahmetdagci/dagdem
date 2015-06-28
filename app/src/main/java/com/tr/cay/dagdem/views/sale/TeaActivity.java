@@ -45,7 +45,7 @@ public class TeaActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tea);
-
+        getActionBar().hide();
         teaList.add(new Tea("Sarı Paket Dağdem Çay"));
         teaList.add(new Tea("Siyah Paket Dağdem Çay"));
         teaList.add(new Tea("Bostan Çay"));

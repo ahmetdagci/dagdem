@@ -29,7 +29,7 @@ public class OraletTeaActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oralet_tea);
-
+        getActionBar().hide();
         oraletTeaList.add(new OraletTea("Limonlu"));
         oraletTeaList.add(new OraletTea("Elmalı"));
         oraletTeaList.add(new OraletTea("Böğürtlenli"));

@@ -1,25 +1,84 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.tr.cay.dagdem.views.sale.SummaryActivity">
 
-    <ListView
-        android:id="@+id/summarySaleList"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="0dp"
+        android:layout_weight="0.7"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/calculateProductPricesButton"
-        android:layout_below="@id/summarySaleList"
+        <ListView
+            android:id="@+id/summarySaleList"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_weight="0.5"
-        android:text="Yazdır" />
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-</RelativeLayout>
+        <!--layout_marginLeft:"8dp"  olmayınca text tamamen sola yaslanıyor-->
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="8dp"
+            android:gravity="left"
+            android:text="Toplam Tutar :"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#993366"
+            />
+
+        <TextView
+            android:id="@+id/totalAccountTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#993366"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/calculateProductPricesButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Hesapla" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/printProductPricesButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Yazdır" />
+
+    </LinearLayout>
+
+</LinearLayout>
