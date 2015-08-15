@@ -3,9 +3,11 @@ package com.tr.cay.dagdem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +18,19 @@ import android.widget.ListView;
 
 import com.tr.cay.dagdem.adapter.CustomerSingleListAdapter;
 import com.tr.cay.dagdem.model.Customer;
+import com.tr.cay.dagdem.model.Product;
+import com.tr.cay.dagdem.model.Tea;
 import com.tr.cay.dagdem.views.sale.TeaActivity;
 
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 public class MainActivity extends Activity
@@ -29,27 +40,20 @@ public class MainActivity extends Activity
     private Button selectCustomerButton;
     private Context context;
 
+    private ListView customerListView;
+    private CustomerSingleListAdapter customerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        customerList.add(new Customer("123","Ahmet Yılmaz"));
-        customerList.add(new Customer("124","Ayşe Küçük"));
-        customerList.add(new Customer("125","Fatma Bulgurcu"));
-        customerList.add(new Customer("126","İzzet Altınmeşe"));
-        customerList.add(new Customer("127","Melek Subaşı"));
-        customerList.add(new Customer("128","Selim Serdilli"));
-        customerList.add(new Customer("129","Halil İbrahim"));
-        customerList.add(new Customer("130","Serap Okumuş"));
-
         searchCustomerList.addAll(customerList);
 
-        final ListView customerListView = (ListView) findViewById(R.id.customerList);
+        customerListView = (ListView) findViewById(R.id.customerList);
 
-
-        final CustomerSingleListAdapter customerAdapter = new CustomerSingleListAdapter(this, searchCustomerList);
+        customerAdapter = new CustomerSingleListAdapter(this, customerList);
 
         final EditText searchBox = (EditText) findViewById(R.id.searchBox);
         searchBox.addTextChangedListener(new TextWatcher(){
@@ -104,6 +108,16 @@ public class MainActivity extends Activity
             }
         });
 
+        System.out.println("onCreate is called");
+    }
+
+
+    @Override
+    protected void onStart()
+    {
+        System.out.println("onStart is called");
+        super.onStart();
+        new HttpRequestTask().execute();
     }
 
     private void hideKeyboard(View view)
@@ -132,5 +146,59 @@ public class MainActivity extends Activity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    private class HttpRequestTask extends AsyncTask<Void, Void, List<Customer>>
+    {
+        @Override
+        protected  List<Customer> doInBackground(Void... params)
+        {
+            List<Customer> customerList = new ArrayList<Customer>();
+            try {
+                final String url = "http://10.0.2.2:3131/dagdem-ws/customers";
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                Object customerObjects[] = restTemplate.getForObject(url, Object[].class);
+                for(Object object:customerObjects)
+                {
+                    Customer customer = new Customer();
+                    LinkedHashMap linkedHashMap = (LinkedHashMap)object;
+                    Set set = linkedHashMap.entrySet();
+                    Iterator iterator = set.iterator();
+                    while(iterator.hasNext())
+                    {
+                        Map.Entry entry = (Map.Entry)iterator.next();
+                        if(entry.getKey().equals("customerId"))
+                        {
+                            customer.setCustomerId(entry.getValue().toString());
+                        }
+                        else if(entry.getKey().equals("name"))
+                        {
+                            customer.setName(entry.getValue().toString());
+                        }
+                    }
+                    customerList.add(customer);
+                }
+                return customerList;
+            } catch (Exception e) {
+                Log.e("MainActivity", e.getMessage(), e);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Customer> customers)
+        {
+            customerList.clear();
+            for(Customer customer:customers)
+            {
+                customerList.add(customer);
+            }
+            customerAdapter.notifyDataSetChanged();
+        }
+
     }
 }

@@ -46,10 +46,6 @@ public class TeaActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tea);
         getActionBar().hide();
-        teaList.add(new Tea("Sarı Paket Dağdem Çay"));
-        teaList.add(new Tea("Siyah Paket Dağdem Çay"));
-        teaList.add(new Tea("Bostan Çay"));
-        teaList.add(new Tea("İki Çay"));
 
         teaListView = (ListView) findViewById(R.id.teaList);
 
@@ -117,7 +113,7 @@ public class TeaActivity extends Activity {
         protected  List<Product> doInBackground(Void... params) {
             List<Product> productList = new ArrayList<Product>();
             try {
-                final String url = "http://10.0.2.2:8080/products?productType=1";
+                final String url = "http://10.0.2.2:3131/dagdem-ws/products?productType=1";
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 Object productObjects[] = restTemplate.getForObject(url, Object[].class);

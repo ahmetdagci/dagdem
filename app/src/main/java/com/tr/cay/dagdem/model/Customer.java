@@ -13,6 +13,9 @@ public class Customer implements Serializable {
     private String  address;
     private boolean checked = false;
 
+    public Customer(){
+
+    }
     public Customer(String customerId,String name) {
         super();
         this.customerId = customerId;
