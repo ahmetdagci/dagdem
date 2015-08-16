@@ -10,10 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.tr.cay.dagdem.R;
-import com.tr.cay.dagdem.views.sale.SummaryActivity;
 import com.tr.cay.dagdem.views.sale.TeaActivity;
-import com.tr.cay.dagdem.wrapper.OraletTeaAdapterWrapper;
-import com.tr.cay.dagdem.wrapper.TeaAdapterWrapper;
 
 public class SalesMenuActivity extends Activity {
 

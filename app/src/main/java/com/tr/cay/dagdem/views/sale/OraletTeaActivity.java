@@ -13,15 +13,10 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.tr.cay.dagdem.R;
-import com.tr.cay.dagdem.adapter.OraletTeaAdapter;
 import com.tr.cay.dagdem.adapter.ProductAdapter;
 import com.tr.cay.dagdem.model.Customer;
-import com.tr.cay.dagdem.model.OraletTea;
 import com.tr.cay.dagdem.model.Product;
-import com.tr.cay.dagdem.model.Tea;
-import com.tr.cay.dagdem.wrapper.OraletTeaAdapterWrapper;
 import com.tr.cay.dagdem.wrapper.ProductAdapterWrapper;
-import com.tr.cay.dagdem.wrapper.TeaAdapterWrapper;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
