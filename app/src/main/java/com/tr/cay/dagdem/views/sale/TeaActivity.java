@@ -5,41 +5,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-import android.util.Log;
-import android.widget.TextView;
-
 import com.tr.cay.dagdem.R;
-import com.tr.cay.dagdem.adapter.TeaAdapter;
+import com.tr.cay.dagdem.adapter.ProductAdapter;
 import com.tr.cay.dagdem.model.Customer;
 import com.tr.cay.dagdem.model.Product;
-import com.tr.cay.dagdem.model.Tea;
-import com.tr.cay.dagdem.wrapper.TeaAdapterWrapper;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import com.tr.cay.dagdem.wrapper.ProductAdapterWrapper;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public class TeaActivity extends Activity {
 
-    final List<Tea> teaList = new ArrayList<Tea>();
-    private Button loginButton;
+    final List<Product> teaProductList = new ArrayList<Product>();
     private Context context;
-    private ListView teaListView;
-    private TeaAdapter teaAdapter;
+    private ProductAdapter productAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,23 +40,23 @@ public class TeaActivity extends Activity {
         setContentView(R.layout.activity_tea);
         getActionBar().hide();
 
-        teaListView = (ListView) findViewById(R.id.teaList);
+        final ListView teaProductListView = (ListView) findViewById(R.id.teaList);
 
-        teaAdapter = new TeaAdapter(this, teaList);
+        productAdapter = new ProductAdapter(this, teaProductList);
 
-        teaListView.setAdapter(teaAdapter);
-
-        Customer selectedCustomer = (Customer) getIntent().getSerializableExtra("selectedCustomer");
+        teaProductListView.setAdapter(productAdapter);
 
         context = this.getApplicationContext();
 
-        loginButton = (Button) findViewById(R.id.loginButton);
+        Button teaButton = (Button) findViewById(R.id.teaButton);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        teaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(context, OraletTeaActivity.class);
-                myIntent.putExtra("selectedTeaList", new TeaAdapterWrapper(teaList));
+                myIntent.putExtra("selectedTeaList", new ProductAdapterWrapper(teaProductList));
+                Customer selectedCustomer = (Customer) getIntent().getSerializableExtra("selectedCustomer");
+                myIntent.putExtra("selectedCustomer", selectedCustomer);
                 startActivity(myIntent);
             }
         });
@@ -154,14 +147,11 @@ public class TeaActivity extends Activity {
         }
 
         @Override
-        protected void onPostExecute(List<Product> productList)
+        protected void onPostExecute(List<Product> tempProductList)
         {
-            teaList.clear();
-            for(Product product:productList)
-            {
-                teaList.add(new Tea(product.getProductName()));
-            }
-            teaAdapter.notifyDataSetChanged();
+            teaProductList.clear();
+            teaProductList.addAll(tempProductList);
+            productAdapter.notifyDataSetChanged();
         }
 
     }

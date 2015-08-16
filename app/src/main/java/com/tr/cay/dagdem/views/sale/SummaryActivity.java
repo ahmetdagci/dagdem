@@ -1,6 +1,8 @@
 package com.tr.cay.dagdem.views.sale;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +14,10 @@ import android.widget.ListView;
 
 import com.tr.cay.dagdem.R;
 import com.tr.cay.dagdem.adapter.SummaryTeaAdapter;
+import com.tr.cay.dagdem.model.Product;
 import com.tr.cay.dagdem.model.Tea;
+import com.tr.cay.dagdem.util.AlertDialogUtil;
+import com.tr.cay.dagdem.wrapper.ProductAdapterWrapper;
 import com.tr.cay.dagdem.wrapper.TeaAdapterWrapper;
 
 import java.util.ArrayList;
@@ -54,13 +59,36 @@ public class SummaryActivity extends Activity
         getActionBar().hide();
         final ListView teaListView = (ListView) findViewById(R.id.summarySaleList);
 
+        final List<Product> selectedProducts = filterSelectedProducts();
+
         Button calculateProductPriceButton = (Button)findViewById(R.id.calculateProductPricesButton);
         calculateProductPriceButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v)
+            public void onClick(View view)
             {
+                try {
+                    checkProductPricesFilled(selectedProducts);
+                    Double totalAmount = calculateSaleAmount(selectedProducts);
+                    TextView totalAccountTextView = (TextView)findViewById(R.id.totalAccountTextView);
+                    totalAccountTextView.setText(totalAmount.toString());
+                    Button saleButton = (Button) findViewById(R.id.saleButton);
+                    saleButton.setVisibility(View.VISIBLE);
+                    view.setVisibility(View.GONE);
+                } catch (Exception exception) {
+                    AlertDialogUtil alertDialogUtil = new AlertDialogUtil(SummaryActivity.this);
+                    alertDialogUtil.showMessage("Uyarı",exception.getMessage());
+                }
+            }
+        });
 
+        Button saleButton = (Button)findViewById(R.id.saleButton);
+        saleButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Button printProductPricesButton = (Button)findViewById(R.id.printProductPricesButton);
+                printProductPricesButton.setVisibility(View.VISIBLE);
+                v.setVisibility(View.GONE);
             }
         });
 
@@ -75,22 +103,49 @@ public class SummaryActivity extends Activity
             }
         });
 
-        SummaryTeaAdapter summaryTeaAdapter = new SummaryTeaAdapter(this, filterSelectedTea());
+        SummaryTeaAdapter summaryTeaAdapter = new SummaryTeaAdapter(this, selectedProducts);
         teaListView.setAdapter(summaryTeaAdapter);
     }
 
-    private List<Tea> filterSelectedTea()
+    private List<Product> filterSelectedProducts()
     {
-        List<Tea> teaList = new ArrayList<Tea>();
-        TeaAdapterWrapper selectedTeaListAdapterWrapper = (TeaAdapterWrapper) getIntent().getSerializableExtra("selectedTeaList");
-        for(Tea tea : selectedTeaListAdapterWrapper.getTeaList())
+        List<Product> productList = new ArrayList<Product>();
+        productList.addAll(filterSelectedProducts((ProductAdapterWrapper) getIntent().getSerializableExtra("selectedTeaList")));
+        productList.addAll(filterSelectedProducts((ProductAdapterWrapper) getIntent().getSerializableExtra("selectedOraletTeaList")));
+        return productList;
+    }
+
+    private List<Product> filterSelectedProducts(ProductAdapterWrapper productAdapterWrapper)
+    {
+        List<Product> productList = new ArrayList<Product>();
+        for(Product product : productAdapterWrapper.getProductList())
         {
-            if (tea.isChecked())
+            if (product.isChecked())
             {
-                teaList.add(tea);
+                productList.add(product);
             }
         }
-        return teaList;
+        return productList;
+    }
+
+    private void checkProductPricesFilled(List<Product> selectedProducts) throws Exception {
+        for(Product product:selectedProducts)
+        {
+            if(product.getSalePrice()<1)
+            {
+                throw new Exception("Lütfen ürünler için fiyat giriniz");
+            }
+        }
+    }
+
+    private Double calculateSaleAmount(List<Product> selectedProducts)
+    {
+        Double totalAmount = 0d;
+        for(Product product:selectedProducts)
+        {
+            totalAmount = totalAmount+product.getSalePrice()*product.getQuantity();
+        }
+        return totalAmount;
     }
 
     // This will find a bluetooth printer device

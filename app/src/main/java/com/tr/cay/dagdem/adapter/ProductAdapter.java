@@ -7,8 +7,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -19,17 +19,15 @@ import com.tr.cay.dagdem.model.Tea;
 import java.util.List;
 
 /**
- * Created by EXT0175855 on 5/15/2015.
+ * Created by EXT0175855 on 8/16/2015.
  */
-public class SummaryTeaAdapter extends BaseAdapter {
+public class ProductAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private List<Product> productList;
-    private Activity activity;
 
-    public SummaryTeaAdapter(Activity activity, List<Product> productList)
+    public ProductAdapter(Activity activity, List<Product> productList)
     {
-        this.activity = activity;
         //XML'i alıp View'a çevirecek inflater'ı örnekleyelim
         mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //gösterilecek listeyi de alalım
@@ -43,32 +41,41 @@ public class SummaryTeaAdapter extends BaseAdapter {
     }
 
     @Override
-    public Product getItem(int position) {
+    public Product getItem(int position)
+    {
         //şöyle de olabilir: public Object getItem(int position)
         return productList.get(position);
     }
 
     @Override
-    public long getItemId(int position)
-    {
+    public long getItemId(int position) {
         return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        View rowView = mInflater.inflate(R.layout.summary_satir_layout, null);
+        View rowView = mInflater.inflate(R.layout.product_satir_layout, null);
+
         final Product product = productList.get(position);
 
-        TextView productNameView = (TextView) rowView.findViewById(R.id.productName);
-        productNameView.setText(product.getProductName());
+        TextView productName = (TextView) rowView.findViewById(R.id.isimsoyisim);
+        productName.setText(product.getProductName());
 
-        TextView productQuantityTextView = (TextView) rowView.findViewById(R.id.productQuantity);
-        productQuantityTextView.setText(String.valueOf(product.getQuantity()));
-
-        EditText productSalePriceText = (EditText) rowView.findViewById(R.id.productSalePrice);
-        productSalePriceText.addTextChangedListener(new TextWatcher()
+        CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.userSelected);
+        checkBox.setOnClickListener(new View.OnClickListener()
         {
+            @Override
+            public void onClick(View v) {
+                CheckBox cb = (CheckBox) v ;
+                product.setChecked(cb.isChecked());
+            }
+        });
+
+        EditText productCountText = (EditText) rowView.findViewById(R.id.productCount);
+        productCountText.addTextChangedListener(new TextWatcher()
+        {
+
             @Override
             public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 
@@ -82,13 +89,9 @@ public class SummaryTeaAdapter extends BaseAdapter {
             @Override
             public void afterTextChanged(Editable arg0)
             {
-                if(arg0.length()>0)
-                {
-                    product.setSalePrice(Double.parseDouble(arg0.toString()));
-                }
+                product.setQuantity(Integer.parseInt(arg0.toString()));
             }
         });
         return rowView;
     }
-
 }

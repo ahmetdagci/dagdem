@@ -3,7 +3,9 @@ package com.tr.cay.dagdem.views.sale;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,38 +14,47 @@ import android.widget.ListView;
 
 import com.tr.cay.dagdem.R;
 import com.tr.cay.dagdem.adapter.OraletTeaAdapter;
+import com.tr.cay.dagdem.adapter.ProductAdapter;
+import com.tr.cay.dagdem.model.Customer;
 import com.tr.cay.dagdem.model.OraletTea;
+import com.tr.cay.dagdem.model.Product;
+import com.tr.cay.dagdem.model.Tea;
 import com.tr.cay.dagdem.wrapper.OraletTeaAdapterWrapper;
+import com.tr.cay.dagdem.wrapper.ProductAdapterWrapper;
 import com.tr.cay.dagdem.wrapper.TeaAdapterWrapper;
 
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class OraletTeaActivity extends Activity {
 
-    final List<OraletTea> oraletTeaList = new ArrayList<OraletTea>();
-    private Button oraletTeaNextButton;
+    final List<Product> oraletProductTeaList = new ArrayList<Product>();
     private Context context;
+
+    private ProductAdapter oraletProductTeaAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oralet_tea);
         getActionBar().hide();
-        oraletTeaList.add(new OraletTea("Limonlu"));
-        oraletTeaList.add(new OraletTea("Elmalı"));
-        oraletTeaList.add(new OraletTea("Böğürtlenli"));
-        oraletTeaList.add(new OraletTea("Ahududu"));
 
         final ListView oraletTeaListView = (ListView) findViewById(R.id.oraletTeaList);
 
-        final OraletTeaAdapter oraletTeaAdapter = new OraletTeaAdapter(this, oraletTeaList);
+        oraletProductTeaAdapter = new ProductAdapter(this, oraletProductTeaList);
 
-        oraletTeaListView.setAdapter(oraletTeaAdapter);
+        oraletTeaListView.setAdapter(oraletProductTeaAdapter);
 
         context = this.getApplicationContext();
 
-        oraletTeaNextButton = (Button) findViewById(R.id.oraletTeaNextButton);
+        Button oraletTeaNextButton = (Button) findViewById(R.id.oraletTeaNextButton);
 
         oraletTeaNextButton.setOnClickListener(new View.OnClickListener()
         {
@@ -51,14 +62,22 @@ public class OraletTeaActivity extends Activity {
             public void onClick(View v)
             {
                 Intent myIntent = new Intent(context, SummaryActivity.class);
-                TeaAdapterWrapper selectedTeaListAdapterWrapper = (TeaAdapterWrapper) getIntent().getSerializableExtra("selectedTeaList");
-                myIntent.putExtra("selectedOraletTeaList", new OraletTeaAdapterWrapper(oraletTeaList));
-                myIntent.putExtra("selectedTeaList", selectedTeaListAdapterWrapper);
+                ProductAdapterWrapper selectedTeaProductListAdapterWrapper = (ProductAdapterWrapper) getIntent().getSerializableExtra("selectedTeaList");
+                Customer selectedCustomer = (Customer) getIntent().getSerializableExtra("selectedCustomer");
+                myIntent.putExtra("selectedOraletTeaList", new ProductAdapterWrapper(oraletProductTeaList));
+                myIntent.putExtra("selectedTeaList", selectedTeaProductListAdapterWrapper);
+                myIntent.putExtra("selectedCustomer", selectedCustomer);
                 startActivity(myIntent);
             }
         });
     }
 
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        new HttpRequestTask().execute();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -80,5 +99,62 @@ public class OraletTeaActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private class HttpRequestTask extends AsyncTask<Void, Void, List<Product>>
+    {
+        @Override
+        protected  List<Product> doInBackground(Void... params) {
+            List<Product> productList = new ArrayList<Product>();
+            try {
+                final String url = "http://10.0.2.2:3131/dagdem-ws/products?productType=1";
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                Object productObjects[] = restTemplate.getForObject(url, Object[].class);
+                for(Object object:productObjects)
+                {
+                    Product product = new Product();
+                    LinkedHashMap linkedHashMap = (LinkedHashMap)object;
+                    Set set = linkedHashMap.entrySet();
+                    Iterator iterator = set.iterator();
+                    while(iterator.hasNext())
+                    {
+                        Map.Entry entry = (Map.Entry)iterator.next();
+                        if(entry.getKey().equals("id"))
+                        {
+                            product.setId(entry.getValue().toString());
+                        }
+                        else if(entry.getKey().equals("productName"))
+                        {
+                            product.setProductName(entry.getValue().toString());
+                        }
+                        else if(entry.getKey().equals("price"))
+                        {
+                            product.setPrice((Double)entry.getValue());
+                        }
+                        else if(entry.getKey().equals("quantity"))
+                        {
+                            product.setQuantity((Integer)entry.getValue());
+                        }
+                    }
+                    productList.add(product);
+                }
+                return productList;
+            } catch (Exception e) {
+                Log.e("MainActivity", e.getMessage(), e);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Product> productList)
+        {
+            oraletProductTeaList.clear();
+            oraletProductTeaList.addAll(productList);
+            oraletProductTeaAdapter.notifyDataSetChanged();
+        }
+
     }
 }

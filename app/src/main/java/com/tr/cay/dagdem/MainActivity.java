@@ -18,8 +18,6 @@ import android.widget.ListView;
 
 import com.tr.cay.dagdem.adapter.CustomerSingleListAdapter;
 import com.tr.cay.dagdem.model.Customer;
-import com.tr.cay.dagdem.model.Product;
-import com.tr.cay.dagdem.model.Tea;
 import com.tr.cay.dagdem.views.sale.TeaActivity;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -37,7 +35,6 @@ public class MainActivity extends Activity
 {
     final List<Customer> customerList = new ArrayList<Customer>();
     final List<Customer> searchCustomerList = new ArrayList<Customer>();
-    private Button selectCustomerButton;
     private Context context;
 
     private ListView customerListView;
@@ -48,12 +45,11 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        searchCustomerList.addAll(customerList);
+        context = this.getApplicationContext();
 
         customerListView = (ListView) findViewById(R.id.customerList);
 
-        customerAdapter = new CustomerSingleListAdapter(this, customerList);
+        customerAdapter = new CustomerSingleListAdapter(this, searchCustomerList);
 
         final EditText searchBox = (EditText) findViewById(R.id.searchBox);
         searchBox.addTextChangedListener(new TextWatcher(){
@@ -92,9 +88,7 @@ public class MainActivity extends Activity
 
         customerListView.setAdapter(customerAdapter);
 
-        context = this.getApplicationContext();
-
-        selectCustomerButton = (Button) findViewById(R.id.selectCustomerButton);
+        Button selectCustomerButton = (Button) findViewById(R.id.selectCustomerButton);
 
         selectCustomerButton.setOnClickListener(new View.OnClickListener()
         {
@@ -108,14 +102,11 @@ public class MainActivity extends Activity
             }
         });
 
-        System.out.println("onCreate is called");
     }
-
 
     @Override
     protected void onStart()
     {
-        System.out.println("onStart is called");
         super.onStart();
         new HttpRequestTask().execute();
     }
@@ -147,8 +138,6 @@ public class MainActivity extends Activity
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
     private class HttpRequestTask extends AsyncTask<Void, Void, List<Customer>>
     {
@@ -197,6 +186,7 @@ public class MainActivity extends Activity
             {
                 customerList.add(customer);
             }
+            searchCustomerList.addAll(customerList);
             customerAdapter.notifyDataSetChanged();
         }
 
