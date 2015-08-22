@@ -58,9 +58,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.7"
-        android:background="#F8F8F1"
         android:orientation="vertical"
-        android:layout_marginTop="3dp">
+        android:layout_marginTop="3dp"
+        android:background="@drawable/linear_layout_list_style">
 
         <ListView
             android:id="@+id/summarySaleList"
