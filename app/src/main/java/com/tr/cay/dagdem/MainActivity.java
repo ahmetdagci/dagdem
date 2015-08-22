@@ -34,7 +34,6 @@ import java.util.Set;
 public class MainActivity extends Activity
 {
     final List<Customer> customerList = new ArrayList<Customer>();
-    final List<Customer> searchCustomerList = new ArrayList<Customer>();
     private Context context;
 
     private ListView customerListView;
@@ -49,26 +48,18 @@ public class MainActivity extends Activity
 
         customerListView = (ListView) findViewById(R.id.customerList);
 
-        customerAdapter = new CustomerSingleListAdapter(this, searchCustomerList);
+        customerAdapter = new CustomerSingleListAdapter(this, customerList);
 
         final EditText searchBox = (EditText) findViewById(R.id.searchBox);
         searchBox.addTextChangedListener(new TextWatcher(){
              public void onTextChanged(CharSequence s, int start, int before, int count)
              {
-                 String searchString = searchBox.getText().toString();
-                 int textLength = searchString.length();
-                 searchCustomerList.clear();
-
-                 for (int i = 0; i < customerList.size(); i++)
+                 if (count < before)
                  {
-                     String customerName = customerList.get(i).getName();
-                     if (textLength <= customerName.length())
-                     {
-                         if (customerName.contains(searchString))
-                             searchCustomerList.add(customerList.get(i));
-                     }
+                     customerAdapter.resetData();
                  }
-                 customerAdapter.notifyDataSetChanged();
+
+                 customerAdapter.getFilter().filter(s.toString());
              }
 
              public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -96,7 +87,7 @@ public class MainActivity extends Activity
             public void onClick(View v)
             {
                 Intent myIntent = new Intent(context, TeaActivity.class);
-                Customer selectedCustomer = Customer.findSelectedCustomer(searchCustomerList);
+                Customer selectedCustomer = Customer.findSelectedCustomer(customerList);
                 myIntent.putExtra("selectedCustomer", selectedCustomer);
                 startActivity(myIntent);
             }
@@ -186,7 +177,6 @@ public class MainActivity extends Activity
             {
                 customerList.add(customer);
             }
-            searchCustomerList.addAll(customerList);
             customerAdapter.notifyDataSetChanged();
         }
 

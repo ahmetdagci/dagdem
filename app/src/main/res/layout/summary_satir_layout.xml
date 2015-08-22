@@ -5,7 +5,10 @@
     android:layout_height="0dp"
     android:layout_weight="0.1"
     android:orientation="horizontal"
-    android:weightSum="3">
+    android:weightSum="3"
+    android:focusable="true"
+    android:clickable="true"
+    android:focusableInTouchMode="true">
 
 <TextView
     android:id="@+id/productName"

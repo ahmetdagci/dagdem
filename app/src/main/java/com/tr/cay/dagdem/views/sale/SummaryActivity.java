@@ -1,22 +1,34 @@
 package com.tr.cay.dagdem.views.sale;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.tr.cay.dagdem.R;
 import com.tr.cay.dagdem.adapter.SummaryTeaAdapter;
+import com.tr.cay.dagdem.model.Customer;
 import com.tr.cay.dagdem.model.Product;
 import com.tr.cay.dagdem.util.AlertDialogUtil;
+import com.tr.cay.dagdem.views.AbstractActivity;
 import com.tr.cay.dagdem.wrapper.ProductAdapterWrapper;
+import com.tr.cay.dagdem.wsmodel.Sale;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import android.bluetooth.BluetoothAdapter;
@@ -24,13 +36,18 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.widget.TextView;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class SummaryActivity extends Activity
+public class SummaryActivity extends AbstractActivity
 {
     private TextView myLabel;
     // android built in classes for bluetooth operations
@@ -52,6 +69,9 @@ public class SummaryActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary);
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
+
         getActionBar().hide();
         final ListView teaListView = (ListView) findViewById(R.id.summarySaleList);
 
@@ -79,12 +99,13 @@ public class SummaryActivity extends Activity
         });
 
         Button saleButton = (Button)findViewById(R.id.saleButton);
-        saleButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                Button printProductPricesButton = (Button)findViewById(R.id.printProductPricesButton);
-                printProductPricesButton.setVisibility(View.VISIBLE);
-                v.setVisibility(View.GONE);
+        saleButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                Customer selectedCustomer = (Customer) getIntent().getSerializableExtra("selectedCustomer");
+                Sale sale = prepareSale(selectedCustomer,selectedProducts);
+                new HttpRequestTask().execute(sale);
             }
         });
 
@@ -142,6 +163,27 @@ public class SummaryActivity extends Activity
             totalAmount = totalAmount+product.getSalePrice()*product.getQuantity();
         }
         return totalAmount;
+    }
+
+    private Sale prepareSale(Customer selectedCustomer,List<Product> selectedProducts)
+    {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        Sale sale = new Sale();
+        List<com.tr.cay.dagdem.wsmodel.Product> productList = new ArrayList<com.tr.cay.dagdem.wsmodel.Product>();
+        sale.setCustomerId(selectedCustomer.getCustomerId());
+        sale.setUserId("123");
+        for(Product product:selectedProducts)
+        {
+            com.tr.cay.dagdem.wsmodel.Product _product = new com.tr.cay.dagdem.wsmodel.Product();
+            _product.setId(product.getId());
+            _product.setQuantity(product.getQuantity());
+            _product.setPrice(product.getSalePrice());
+            _product.setProductName(product.getProductName());
+            productList.add(_product);
+        }
+        sale.setProductList(productList);
+        return sale;
     }
 
     // This will find a bluetooth printer device
@@ -311,5 +353,44 @@ public class SummaryActivity extends Activity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private class HttpRequestTask extends AsyncTask<Sale,Void, Integer>
+    {
+        @Override
+        protected  Integer doInBackground(Sale... sales)
+        {
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                ResponseEntity<Integer> responseEntity = restTemplate.postForEntity("http://10.0.2.2:3131/dagdem-ws/sale", sales[0], Integer.class);
+                return responseEntity.getBody();
+            } catch (Exception e) {
+                Log.e("MainActivity", e.getMessage(), e);
+            }
+
+            return new Integer("-1");
+        }
+
+        @Override
+        protected void onPostExecute(Integer result)
+        {
+
+            if(result==0)
+            {
+                Button printProductPricesButton = (Button)findViewById(R.id.printProductPricesButton);
+                printProductPricesButton.setVisibility(View.VISIBLE);
+                Button saleButton = (Button)findViewById(R.id.saleButton);
+                saleButton.setVisibility(View.GONE);
+                AlertDialogUtil alertDialogUtil = new AlertDialogUtil(SummaryActivity.this);
+                alertDialogUtil.showMessage("","Satış işlemi başarıyla yapıldı");
+            }else
+            {
+                AlertDialogUtil alertDialogUtil = new AlertDialogUtil(SummaryActivity.this);
+                alertDialogUtil.showMessage("Uyarı","Satış işlemi gerçekleşmedi");
+            }
+        }
+
     }
 }

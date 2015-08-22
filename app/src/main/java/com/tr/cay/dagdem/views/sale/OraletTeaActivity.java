@@ -16,6 +16,7 @@ import com.tr.cay.dagdem.R;
 import com.tr.cay.dagdem.adapter.ProductAdapter;
 import com.tr.cay.dagdem.model.Customer;
 import com.tr.cay.dagdem.model.Product;
+import com.tr.cay.dagdem.views.AbstractActivity;
 import com.tr.cay.dagdem.wrapper.ProductAdapterWrapper;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -28,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class OraletTeaActivity extends Activity {
+public class OraletTeaActivity extends AbstractActivity {
 
     final List<Product> oraletProductTeaList = new ArrayList<Product>();
     private Context context;
