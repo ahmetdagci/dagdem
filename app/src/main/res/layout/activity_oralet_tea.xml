@@ -70,15 +70,7 @@
         <Button
             android:id="@+id/oraletTeaNextButton"
             android:text="Özet Sayfasına Git"
-            android:textColor="#878787"
-            android:textSize="18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/product_tea_button"
-            android:shadowColor="#A8A8A8"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"/>
+            style="@style/buttonStyle"/>
 
     </LinearLayout>
 
