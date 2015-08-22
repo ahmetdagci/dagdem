@@ -83,14 +83,16 @@
 
         <!--layout_marginLeft:"8dp"  olmayınca text tamamen sola yaslanıyor-->
         <TextView
-            android:layout_width="100dip"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="2dp"
             android:gravity="left"
             android:text="Toplam Tutar :"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#993366"
+            android:textSize="12pt"
+            android:typeface="serif"
+            android:textColor="#710505"
+
             />
 
         <TextView
@@ -99,8 +101,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#993366"
+            android:textSize="12pt"
+            android:typeface="serif"
+            android:textColor="#710505"
             />
     </LinearLayout>
 
