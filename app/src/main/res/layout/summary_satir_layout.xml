@@ -32,14 +32,15 @@
 
 <EditText
     android:id="@+id/productSalePrice"
-    android:layout_width="70dip"
-    android:layout_height="wrap_content"
+    android:layout_width="130dip"
+    android:layout_height="fill_parent"
     android:layout_weight="0.5"
     android:layout_centerVertical="true"
     android:ellipsize="start"
     android:gravity="center"
-    android:background="@drawable/edit_text_design"
+    android:background="@drawable/quantity_text_design"
     android:inputType="numberDecimal"
     android:maxLines="1"
     />
+
 </LinearLayout>

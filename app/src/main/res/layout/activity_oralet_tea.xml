@@ -10,66 +10,76 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="0.1"
-    android:orientation="horizontal"
-    android:background="#2F2F2F"
-    android:weightSum="2">
+    <LinearLayout
+        android:background="@drawable/product_tea_button"
+        style="@style/productHeaderLayoutStyle">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center_horizontal"
-        android:text="Oralet Adı"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#993366"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="left"
+            android:text="Ürün Adı"
+            android:textColor="#878787"
+            android:textSize="18sp"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center_horizontal"
-        android:text="Oralet Adedi"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#993366"
-        />
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="14dp"
+            android:layout_marginRight="5dp"
+            android:gravity="end"
+            android:text="Ürün Adedi"
+            android:textColor="#878787"
+            android:textSize="18sp"
+            />
+    </LinearLayout>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="0.9"
-    android:orientation="vertical" >
-
-    <ListView
-        android:id="@+id/oraletTeaList"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        />
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        android:background="#F8F8F1"
+        android:orientation="vertical"
+        android:layout_marginTop="3dp">
 
-</LinearLayout>
+        <ListView
+            android:id="@+id/oraletTeaList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:divider="#b5b5b5"
+            android:dividerHeight="1dp"
+            android:choiceMode="multipleChoice"
+            android:listSelector="@drawable/list_selector"/>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="0.1"
-    android:gravity="center"
-    android:orientation="vertical" >
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/oraletTeaNextButton"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_below="@id/oraletTeaList"
-        android:layout_weight="0.5"
-        android:layout_height="80dp"
-        android:text="Özet Sayfasına Git"
-        />
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:layout_marginTop="3dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <Button
+            android:id="@+id/oraletTeaNextButton"
+            android:text="Özet Sayfasına Git"
+            android:textColor="#878787"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/product_tea_button"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"/>
+
+    </LinearLayout>
 
 </LinearLayout>
