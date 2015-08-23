@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.tr.cay.dagdem.R;
 import com.tr.cay.dagdem.model.Product;
-import com.tr.cay.dagdem.model.Tea;
 
 import java.util.List;
 

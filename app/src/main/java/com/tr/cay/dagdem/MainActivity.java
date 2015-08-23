@@ -18,7 +18,7 @@ import android.widget.ListView;
 
 import com.tr.cay.dagdem.adapter.CustomerSingleListAdapter;
 import com.tr.cay.dagdem.model.Customer;
-import com.tr.cay.dagdem.views.sale.TeaActivity;
+import com.tr.cay.dagdem.views.SalesMenuActivity;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -86,7 +86,7 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v)
             {
-                Intent myIntent = new Intent(context, TeaActivity.class);
+                Intent myIntent = new Intent(context, SalesMenuActivity.class);
                 Customer selectedCustomer = Customer.findSelectedCustomer(customerList);
                 myIntent.putExtra("selectedCustomer", selectedCustomer);
                 startActivity(myIntent);
@@ -157,6 +157,11 @@ public class MainActivity extends Activity
                         else if(entry.getKey().equals("name"))
                         {
                             customer.setName(entry.getValue().toString());
+                        }
+                        else if(entry.getKey().equals("lastName"))
+                        {
+                            if(entry.getValue()!=null)
+                                customer.setLastName(entry.getValue().toString());
                         }
                     }
                     customerList.add(customer);

@@ -9,6 +9,7 @@ import java.util.List;
 public class Customer implements Serializable {
 
     private String customerId;
+    private String lastName;
     private String  name;
     private String  address;
     private boolean checked = false;
@@ -65,6 +66,17 @@ public class Customer implements Serializable {
     }
 
 
+    public String getDisplayName()
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(customerId);
+        stringBuilder.append("-");
+        stringBuilder.append(name);
+        stringBuilder.append(" ");
+        stringBuilder.append(lastName);
+        return stringBuilder.toString();
+    }
+
     @Override
     public String toString() {
         return name + address;
@@ -78,5 +90,13 @@ public class Customer implements Serializable {
               return customer;
       }
         return null;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

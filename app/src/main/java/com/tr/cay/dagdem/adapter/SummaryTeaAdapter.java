@@ -5,17 +5,14 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.tr.cay.dagdem.R;
 import com.tr.cay.dagdem.model.Product;
-import com.tr.cay.dagdem.model.Tea;
 
 import java.util.List;
 

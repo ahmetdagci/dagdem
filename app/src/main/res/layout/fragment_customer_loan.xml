@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:columnCount="2"
+        android:rowCount="3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Toplam Satış Tutarı :"
+                android:textSize="8pt"
+                android:layout_rowSpan="2"
+                android:typeface="serif"
+                android:textColor="#710505"
+                />
+
+            <TextView
+                android:id="@+id/totalSaleAmountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_rowSpan="2"
+                android:textSize="8pt"
+                android:typeface="serif"
+                android:textColor="#710505"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Toplam Ödem Tutarı :"
+                android:layout_rowSpan="2"
+                android:textSize="8pt"
+                android:typeface="serif"
+                android:textColor="#710505"
+                />
+
+            <TextView
+                android:id="@+id/totalPaymentAmountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_rowSpan="2"
+                android:textSize="8pt"
+                android:typeface="serif"
+                android:textColor="#710505"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_rowSpan="2"
+                android:text="Toplam Borç :"
+                android:textSize="8pt"
+                android:typeface="serif"
+                android:textColor="#710505"
+                />
+
+            <TextView
+                android:id="@+id/totalLoanAmountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="8pt"
+                android:typeface="serif"
+                android:textColor="#710505"
+                />
+
+    </GridLayout>
+
+</RelativeLayout>

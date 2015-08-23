@@ -1,13 +1,47 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.tr.cay.dagdem.views.payment.PaymentActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    tools:context=" com.tr.cay.dagdem.views.payment.PaymentActivity">
 
-    <TextView android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Ödeme Tutarı"
+        android:textSize="8pt"
+        android:typeface="serif"
+        android:textColor="#710505"
+        android:gravity="center"
+        />
+
+    <EditText
+        android:id="@+id/customerPaymentText"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:layout_centerVertical="true"
+        android:ellipsize="start"
+        android:gravity="center"
+        android:background="@drawable/quantity_text_design"
+        android:inputType="numberDecimal"
+        android:maxLines="1"
+        />
+
+    <Button
+        android:id="@+id/customerPaymentButton"
+        android:text="Ödeme Al"
+        android:gravity="center"
+        style="@style/buttonStyle"/>
+
+</LinearLayout>

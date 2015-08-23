@@ -77,7 +77,7 @@ public class CustomerSingleListAdapter extends BaseAdapter implements Filterable
 
         final Customer customer = customerList.get(position);
 
-        customerHolder.customerNameView.setText(customer.getName());
+        customerHolder.customerNameView.setText(customer.getDisplayName());
 
         InertCheckBox radioButton = (InertCheckBox) rowView.findViewById(R.id.singleItemCheckBox);
         radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

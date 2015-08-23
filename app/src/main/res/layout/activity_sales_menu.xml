@@ -1,35 +1,34 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.tr.cay.dagdem.views.SalesMenuActivity">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.tr.cay.dagdem.views.SalesMenuActivity"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="center|top">
 
     <Button
         android:id="@+id/salesButton"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:text="@string/sales_button" />
+        android:text="@string/sales_button"
+        style="@style/buttonStyle"/>
 
     <Button
         android:id="@+id/paymentButton"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:text="@string/payment_button" />
+        android:text="@string/payment_button"
+        style="@style/buttonStyle"/>
 
     <Button
         android:id="@+id/loanViewButton"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:text="@string/loan_view_button" />
+        android:text="@string/loan_view_button"
+        style="@style/buttonStyle"/>
 
     <Button
         android:id="@+id/salesHistoryViewButton"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:text="@string/sales_history_view_button" />
+        android:text="@string/sales_history_view_button"
+        style="@style/buttonStyle"/>
 
-</RelativeLayout>
+</LinearLayout>
