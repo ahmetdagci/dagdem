@@ -2,33 +2,24 @@ package com.tr.cay.dagdem;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.tr.cay.dagdem.model.Customer;
-import com.tr.cay.dagdem.util.AlertDialogUtil;
-import com.tr.cay.dagdem.views.SalesMenuActivity;
 import com.tr.cay.dagdem.wsmodel.CustomerTrafficReport;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -44,8 +35,7 @@ public class CustomerLoanFragment extends DialogFragment {
     public CustomerLoanFragment() {
     }
 
-    public static CustomerLoanFragment newInstance(Customer customer)
-    {
+    public static CustomerLoanFragment newInstance(Customer customer) {
         CustomerLoanFragment fragment = new CustomerLoanFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_CUSTOMER, customer);
@@ -54,19 +44,16 @@ public class CustomerLoanFragment extends DialogFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.MyDialog);
-        if (getArguments() != null)
-        {
-            selectedCustomer = (Customer)getArguments().getSerializable(ARG_CUSTOMER);
+        if (getArguments() != null) {
+            selectedCustomer = (Customer) getArguments().getSerializable(ARG_CUSTOMER);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().setTitle("Müşeri Satış Bilgisi Güncelleniyor");
         View customerLoanFragmentView = inflater.inflate(R.layout.fragment_customer_loan, container, false);
@@ -77,17 +64,15 @@ public class CustomerLoanFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         getDialog().getWindow().setLayout(800, 400);
-        Customer customer = (Customer)getArguments().getSerializable(ARG_CUSTOMER);
+        Customer customer = (Customer) getArguments().getSerializable(ARG_CUSTOMER);
         new HttpRequestTask().execute(customer);
     }
 
     @Override
-    public void onAttach(Activity activity)
-    {
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
     }
 
@@ -96,8 +81,7 @@ public class CustomerLoanFragment extends DialogFragment {
         super.onDetach();
     }
 
-    private class HttpRequestTask extends AsyncTask<Customer, Void, CustomerTrafficReport>
-    {
+    private class HttpRequestTask extends AsyncTask<Customer, Void, CustomerTrafficReport> {
         @Override
         protected CustomerTrafficReport doInBackground(Customer... params) {
             try {
@@ -107,24 +91,18 @@ public class CustomerLoanFragment extends DialogFragment {
                 wsParams.put("customerId", params[0].getCustomerId());
                 CustomerTrafficReport customerTrafficReport = new CustomerTrafficReport();
                 Object object = restTemplate.getForObject("http://10.0.2.2:3131/dagdem-ws/queryCustomerLoanAndIncome/{customerId}", Object.class, wsParams);
-                LinkedHashMap linkedHashMap = (LinkedHashMap)object;
+                LinkedHashMap linkedHashMap = (LinkedHashMap) object;
                 Set set = linkedHashMap.entrySet();
                 Iterator iterator = set.iterator();
-                while(iterator.hasNext())
-                {
-                    Map.Entry entry = (Map.Entry)iterator.next();
-                    if(entry.getKey().equals("customerNo"))
-                    {
+                while (iterator.hasNext()) {
+                    Map.Entry entry = (Map.Entry) iterator.next();
+                    if (entry.getKey().equals("customerNo")) {
                         customerTrafficReport.setCustomerNo(entry.getValue().toString());
-                    }
-                    else if(entry.getKey().equals("totalPaymentAmount"))
-                    {
-                        if(entry.getValue()!=null)
+                    } else if (entry.getKey().equals("totalPaymentAmount")) {
+                        if (entry.getValue() != null)
                             customerTrafficReport.setTotalPaymentAmount(new BigDecimal(entry.getValue().toString()));
-                    }
-                    else if(entry.getKey().equals("totalSaleAmount"))
-                    {
-                        if(entry.getValue()!=null)
+                    } else if (entry.getKey().equals("totalSaleAmount")) {
+                        if (entry.getValue() != null)
                             customerTrafficReport.setTotalSaleAmount(new BigDecimal(entry.getValue().toString()));
                     }
                 }
@@ -136,10 +114,8 @@ public class CustomerLoanFragment extends DialogFragment {
         }
 
         @Override
-        protected void onPostExecute(CustomerTrafficReport customerTrafficReport)
-        {
-            if(customerTrafficReport!=null)
-            {
+        protected void onPostExecute(CustomerTrafficReport customerTrafficReport) {
+            if (customerTrafficReport != null) {
                 getDialog().setTitle("Müşteri Satış Bilgileri");
                 totalSaleAmountTextView.setText(customerTrafficReport.getTotalSaleAmount().toString());
                 totalPaymentAmountTextView.setText(customerTrafficReport.getTotalPaymentAmount().toString());

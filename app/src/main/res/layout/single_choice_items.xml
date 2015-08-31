@@ -24,8 +24,8 @@
         android:layout_height="fill_parent"
         android:layout_toRightOf="@+id/singleItemCheckBox"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
-        android:textSize="14sp"
+        android:layout_marginLeft="25dp"
+        android:textSize="18sp"
         android:focusable="false" />
 
 </com.tr.cay.dagdem.views.customLayout.CheckableRelativeLayout>

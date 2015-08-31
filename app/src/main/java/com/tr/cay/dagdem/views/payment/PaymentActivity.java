@@ -1,6 +1,8 @@
 package com.tr.cay.dagdem.views.payment;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.tr.cay.dagdem.MainActivity;
 import com.tr.cay.dagdem.R;
 import com.tr.cay.dagdem.model.Customer;
 import com.tr.cay.dagdem.model.Product;
@@ -26,12 +30,19 @@ import java.util.List;
 
 public class PaymentActivity extends AbstractActivity {
 
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+        context = this.getApplicationContext();
         getActionBar().hide();
+
+        final Customer selectedCustomer = (Customer) getIntent().getSerializableExtra("selectedCustomer");
+        TextView selectedCustomerTextViewId = (TextView) findViewById(R.id.selectedCustomerTextViewId);
+        selectedCustomerTextViewId.setText(selectedCustomer.getNameLastName());
 
         Button customerPaymentButton = (Button) findViewById(R.id.customerPaymentButton);
 
@@ -40,9 +51,18 @@ public class PaymentActivity extends AbstractActivity {
             @Override
             public void onClick(View v)
             {
-                Customer selectedCustomer = (Customer) getIntent().getSerializableExtra("selectedCustomer");
                 EditText payment = (EditText)findViewById(R.id.customerPaymentText);
                 new HttpRequestTask(selectedCustomer,new BigDecimal(payment.getText().toString())).execute();
+            }
+        });
+
+        Button returnToCustomerPage = (Button)findViewById(R.id.returnToCustomerPage);
+        returnToCustomerPage.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                Intent myIntent = new Intent(context, MainActivity.class);
+                startActivity(myIntent);
             }
         });
     }

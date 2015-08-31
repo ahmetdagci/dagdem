@@ -9,26 +9,31 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:gravity="center|top">
+        android:gravity="center|top"
+        android:background="#DCDCDC">
 
     <Button
         android:id="@+id/salesButton"
         android:text="@string/sales_button"
+        android:layout_marginTop="7dp"
         style="@style/buttonStyle"/>
 
     <Button
         android:id="@+id/paymentButton"
         android:text="@string/payment_button"
+        android:layout_marginTop="7dp"
         style="@style/buttonStyle"/>
 
     <Button
         android:id="@+id/loanViewButton"
         android:text="@string/loan_view_button"
+        android:layout_marginTop="7dp"
         style="@style/buttonStyle"/>
 
     <Button
         android:id="@+id/salesHistoryViewButton"
         android:text="@string/sales_history_view_button"
+        android:layout_marginTop="7dp"
         style="@style/buttonStyle"/>
 
 </LinearLayout>

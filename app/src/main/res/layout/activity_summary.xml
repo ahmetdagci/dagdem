@@ -2,18 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:focusable="true"
     android:clickable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.tr.cay.dagdem.views.sale.SummaryActivity">
+    tools:context="com.tr.cay.dagdem.views.sale.SummaryActivity"
+    android:background="#DCDCDC">
 
     <LinearLayout
-        android:background="@drawable/product_tea_button"
         style="@style/productHeaderLayoutStyle">
 
         <TextView
@@ -57,18 +53,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.7"
+        android:layout_weight="0.8"
         android:orientation="vertical"
-        android:layout_marginTop="3dp"
-        android:background="@drawable/linear_layout_list_style">
+        android:layout_marginTop="3dp">
 
         <ListView
             android:id="@+id/summarySaleList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:divider="#b5b5b5"
-            android:dividerHeight="1dp"
+            android:divider="#CCCCCC"
+            android:dividerHeight="7dp"
             android:listSelector="@drawable/list_selector"
             />
     </LinearLayout>
@@ -107,32 +102,46 @@
             />
     </LinearLayout>
 
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:layout_marginTop="3dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:shrinkColumns="*"
+        android:stretchColumns="*"
+        android:weightSum="2">
 
-        <Button
-            android:id="@+id/calculateProductPricesButton"
-            android:text="Hesapla"
-            style="@style/buttonStyle"/>
+        <TableRow android:layout_weight="1"
+                  android:gravity="center_horizontal" >
+            <Button
+                android:id="@+id/calculateProductPricesButton"
+                android:text="Hesapla"
+                android:layout_width="150dp"
+                style="@style/buttonStyle"/>
 
-        <Button
-            android:id="@+id/saleButton"
-            android:text="Satış Yap"
-            android:visibility="gone"
-            style="@style/buttonStyle"/>
+            <Button
+                android:id="@+id/saleButton"
+                android:text="Satış Yap"
+                android:layout_width="150dp"
+                style="@style/buttonStyle"/>
+        </TableRow>
 
-        <Button
-            android:id="@+id/printProductPricesButton"
-            android:text="Yazdır"
-            android:visibility="gone"
-            style="@style/buttonStyle"/>
+        <TableRow android:layout_weight="1"
+                  android:gravity="center_horizontal" >
+            <Button
+                android:id="@+id/printProductPricesButton"
+                android:text="Yazdır"
+                android:layout_width="150dp"
+                style="@style/buttonStyle"/>
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/returnToCustomerPage"
+                android:text="Müşteri Sayfasına Dön"
+                android:layout_width="150dp"
+                style="@style/buttonStyle"/>
+        </TableRow>
+
+    </TableLayout >
+
 
 
 </LinearLayout>

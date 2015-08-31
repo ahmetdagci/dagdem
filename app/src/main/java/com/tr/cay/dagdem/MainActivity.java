@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.tr.cay.dagdem.adapter.CustomerSingleListAdapter;
 import com.tr.cay.dagdem.model.Customer;
@@ -45,6 +46,8 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this.getApplicationContext();
+
+        new HttpRequestTask().execute();
 
         customerListView = (ListView) findViewById(R.id.customerList);
 
@@ -86,10 +89,16 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v)
             {
-                Intent myIntent = new Intent(context, SalesMenuActivity.class);
                 Customer selectedCustomer = Customer.findSelectedCustomer(customerList);
-                myIntent.putExtra("selectedCustomer", selectedCustomer);
-                startActivity(myIntent);
+                if(selectedCustomer!=null)
+                {
+                    Intent myIntent = new Intent(context, SalesMenuActivity.class);
+                    myIntent.putExtra("selectedCustomer", selectedCustomer);
+                    startActivity(myIntent);
+                }else
+                {
+                    Toast.makeText(context,"Lütfen müşteri seçiniz",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -99,7 +108,6 @@ public class MainActivity extends Activity
     protected void onStart()
     {
         super.onStart();
-        new HttpRequestTask().execute();
     }
 
     private void hideKeyboard(View view)

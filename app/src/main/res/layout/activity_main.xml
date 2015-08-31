@@ -2,24 +2,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:focusable="true"
     android:orientation="vertical"
     android:clickable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:background="#DCDCDC">
 
 <EditText
         android:id="@+id/searchBox"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
         android:layout_centerVertical="true"
         android:ellipsize="start"
@@ -27,7 +23,8 @@
         android:background="@drawable/edit_text_design"
         android:hint="Müşteri Ara.."
         android:inputType="textVisiblePassword"
-        android:maxLines="1"/>
+        android:maxLines="1"
+        android:textColor="#101010"/>
 
 
     <LinearLayout
@@ -35,15 +32,15 @@
         android:layout_height="0dp"
         android:layout_weight="0.9"
         android:orientation="vertical"
-        android:background="@drawable/linear_layout_list_style">
+        android:paddingTop="10dp">
         <ListView
             android:id="@+id/customerList"
             android:layout_width = "fill_parent"
             android:layout_height = "fill_parent"
+            android:background="#F0F0F0"
             android:layout_weight="1"
-            android:cacheColorHint="#00000000"
-            android:divider="#b5b5b5"
-            android:dividerHeight="1dp"
+            android:divider="#CCCCCC"
+            android:dividerHeight="7dp"
             android:choiceMode="singleChoice"
             android:listSelector="@drawable/list_selector"/>
     </LinearLayout>

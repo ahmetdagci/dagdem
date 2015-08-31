@@ -12,7 +12,8 @@ public class Product implements Serializable {
     private String id;
     private String productName;
     private double price;
-    private int quantity;
+    private int stockQuantity = 0;
+    private int saleQuantity = 0;
     private ProductType productType;
     private double salePrice;
     private boolean checked = false;
@@ -26,7 +27,7 @@ public class Product implements Serializable {
         this.id = id;
         this.productName = productName;
         this.price = d;
-        this.quantity = quantity;
+        this.stockQuantity = quantity;
     }
 
 
@@ -35,7 +36,7 @@ public class Product implements Serializable {
         this.id = id;
         this.productName = productName;
         this.price = d;
-        this.quantity = quantity;
+        this.stockQuantity = quantity;
         this.productType = productType;
         this.salePrice = salePrice;
     }
@@ -58,11 +59,11 @@ public class Product implements Serializable {
     public void setPrice(double price) {
         this.price = price;
     }
-    public int getQuantity() {
-        return quantity;
+    public int getStockQuantity() {
+        return stockQuantity;
     }
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setStockQuantity(int quantity) {
+        this.stockQuantity = quantity;
     }
     public boolean isChecked()
     {
@@ -89,10 +90,18 @@ public class Product implements Serializable {
         this.salePrice = salePrice;
     }
 
+    public int getSaleQuantity() {
+        return saleQuantity;
+    }
+
+    public void setSaleQuantity(int saleQuantity) {
+        this.saleQuantity = saleQuantity;
+    }
+
 	@Override
     public String toString()
     {
-        return id+","+productName+","+price+","+quantity;
+        return id+","+productName+","+price+","+stockQuantity;
     }
 
 

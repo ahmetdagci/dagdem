@@ -1,40 +1,32 @@
 package com.tr.cay.dagdem.views.sale;
 
-import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.tr.cay.dagdem.MainActivity;
 import com.tr.cay.dagdem.R;
 import com.tr.cay.dagdem.adapter.SummaryTeaAdapter;
 import com.tr.cay.dagdem.model.Customer;
 import com.tr.cay.dagdem.model.Product;
 import com.tr.cay.dagdem.util.AlertDialogUtil;
 import com.tr.cay.dagdem.views.AbstractActivity;
+import com.tr.cay.dagdem.views.SalesMenuActivity;
 import com.tr.cay.dagdem.wrapper.ProductAdapterWrapper;
 import com.tr.cay.dagdem.wsmodel.Sale;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
-import android.widget.TextView;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -43,12 +35,14 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 public class SummaryActivity extends AbstractActivity
 {
+    private Context context;
     private TextView myLabel;
     // android built in classes for bluetooth operations
     BluetoothAdapter mBluetoothAdapter;
@@ -64,6 +58,8 @@ public class SummaryActivity extends AbstractActivity
     int counter;
     volatile boolean stopWorker;
 
+    private boolean saleDone = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -73,6 +69,8 @@ public class SummaryActivity extends AbstractActivity
 //        StrictMode.setThreadPolicy(policy);
 
         getActionBar().hide();
+        context = this.getApplicationContext();
+        saleDone = false;
         final ListView teaListView = (ListView) findViewById(R.id.summarySaleList);
 
         final List<Product> selectedProducts = filterSelectedProducts();
@@ -88,9 +86,6 @@ public class SummaryActivity extends AbstractActivity
                     Double totalAmount = calculateSaleAmount(selectedProducts);
                     TextView totalAccountTextView = (TextView)findViewById(R.id.totalAccountTextView);
                     totalAccountTextView.setText(totalAmount.toString());
-                    Button saleButton = (Button) findViewById(R.id.saleButton);
-                    saleButton.setVisibility(View.VISIBLE);
-                    view.setVisibility(View.GONE);
                 } catch (Exception exception) {
                     AlertDialogUtil alertDialogUtil = new AlertDialogUtil(SummaryActivity.this);
                     alertDialogUtil.showMessage("Uyarı",exception.getMessage());
@@ -103,9 +98,23 @@ public class SummaryActivity extends AbstractActivity
         {
             public void onClick(View view)
             {
-                Customer selectedCustomer = (Customer) getIntent().getSerializableExtra("selectedCustomer");
-                Sale sale = prepareSale(selectedCustomer,selectedProducts);
-                new HttpRequestTask().execute(sale);
+                if(!saleDone){
+                    Customer selectedCustomer = (Customer) getIntent().getSerializableExtra("selectedCustomer");
+                    Sale sale = prepareSale(selectedCustomer,selectedProducts);
+                    new HttpRequestTask().execute(sale);
+                }else{
+                    Toast.makeText(SummaryActivity.this.getBaseContext(),"Satış yapılmıştır", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        Button returnToCustomerPage = (Button)findViewById(R.id.returnToCustomerPage);
+        returnToCustomerPage.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                Intent myIntent = new Intent(context, MainActivity.class);
+                startActivity(myIntent);
             }
         });
 
@@ -137,7 +146,7 @@ public class SummaryActivity extends AbstractActivity
         List<Product> productList = new ArrayList<Product>();
         for(Product product : productAdapterWrapper.getProductList())
         {
-            if (product.isChecked())
+            if (product.getSaleQuantity()>0)
             {
                 productList.add(product);
             }
@@ -160,7 +169,7 @@ public class SummaryActivity extends AbstractActivity
         Double totalAmount = 0d;
         for(Product product:selectedProducts)
         {
-            totalAmount = totalAmount+product.getSalePrice()*product.getQuantity();
+            totalAmount = totalAmount+product.getSalePrice()*product.getSaleQuantity();
         }
         return totalAmount;
     }
@@ -177,7 +186,7 @@ public class SummaryActivity extends AbstractActivity
         {
             com.tr.cay.dagdem.wsmodel.Product _product = new com.tr.cay.dagdem.wsmodel.Product();
             _product.setId(product.getId());
-            _product.setQuantity(product.getQuantity());
+            _product.setQuantity(product.getSaleQuantity());
             _product.setPrice(product.getSalePrice());
             _product.setProductName(product.getProductName());
             productList.add(_product);
@@ -379,12 +388,9 @@ public class SummaryActivity extends AbstractActivity
 
             if(result==0)
             {
-                Button printProductPricesButton = (Button)findViewById(R.id.printProductPricesButton);
-                printProductPricesButton.setVisibility(View.VISIBLE);
-                Button saleButton = (Button)findViewById(R.id.saleButton);
-                saleButton.setVisibility(View.GONE);
                 AlertDialogUtil alertDialogUtil = new AlertDialogUtil(SummaryActivity.this);
                 alertDialogUtil.showMessage("","Satış işlemi başarıyla yapıldı");
+                saleDone = true;
             }else
             {
                 AlertDialogUtil alertDialogUtil = new AlertDialogUtil(SummaryActivity.this);

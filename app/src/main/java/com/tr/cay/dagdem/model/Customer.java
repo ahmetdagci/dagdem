@@ -66,6 +66,15 @@ public class Customer implements Serializable {
     }
 
 
+    public String getNameLastName()
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(name);
+        stringBuilder.append(" ");
+        stringBuilder.append(lastName);
+        return stringBuilder.toString();
+    }
+
     public String getDisplayName()
     {
         StringBuilder stringBuilder = new StringBuilder();

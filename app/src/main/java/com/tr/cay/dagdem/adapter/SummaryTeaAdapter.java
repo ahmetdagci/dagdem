@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -55,14 +56,25 @@ public class SummaryTeaAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        View rowView = mInflater.inflate(R.layout.summary_satir_layout, null);
+        View rowView = mInflater.inflate(R.layout.summary_satir_layout, parent,false);
         final Product product = productList.get(position);
 
         TextView productNameView = (TextView) rowView.findViewById(R.id.productName);
         productNameView.setText(product.getProductName());
 
         TextView productQuantityTextView = (TextView) rowView.findViewById(R.id.productQuantity);
-        productQuantityTextView.setText(String.valueOf(product.getQuantity()));
+        productQuantityTextView.setText(String.valueOf(product.getSaleQuantity()));
+
+        Button deleteProductButton = (Button) rowView.findViewById(R.id.deleteProductButton);
+        deleteProductButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                productList.remove(product);
+                SummaryTeaAdapter.this.notifyDataSetChanged();
+            }
+        });
+
 
         EditText productSalePriceText = (EditText) rowView.findViewById(R.id.productSalePrice);
         productSalePriceText.addTextChangedListener(new TextWatcher()

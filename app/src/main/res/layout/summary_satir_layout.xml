@@ -2,45 +2,47 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="0.1"
+    android:layout_height="32dp"
     android:orientation="horizontal"
-    android:weightSum="3"
     android:focusable="true"
     android:clickable="true"
     android:focusableInTouchMode="true">
 
 <TextView
     android:id="@+id/productName"
-    android:layout_width="170dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:gravity="left"
-    android:textAppearance="?android:attr/textAppearanceMedium"
-    android:textColor="#993366"
-    />
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="0.5"
+    android:layout_marginTop="6dp"/>
 
 <TextView
     android:id="@+id/productQuantity"
     android:layout_width="10dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:gravity="center_horizontal"
-    android:textAppearance="?android:attr/textAppearanceMedium"
-    android:textColor="#993366"
+    android:layout_height="25dp"
+    android:layout_marginTop="3dp"
     />
 
 <EditText
     android:id="@+id/productSalePrice"
-    android:layout_width="110dp"
-    android:layout_height="fill_parent"
-    android:layout_weight="0.5"
+    android:layout_width="70dp"
+    android:layout_height="25dp"
+    android:layout_marginTop="3dp"
+    android:gravity="center"
     android:layout_centerVertical="true"
     android:ellipsize="start"
-    android:gravity="center"
+    android:textAppearance="?android:attr/textAppearanceSmall"
     android:background="@drawable/quantity_text_design"
     android:inputType="numberDecimal"
     android:maxLines="1"
     />
+
+<Button
+    android:id="@+id/deleteProductButton"
+    android:layout_width="22dp"
+    android:layout_height="21dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginTop="6dp"
+    android:background="@drawable/delete"/>
 
 </LinearLayout>

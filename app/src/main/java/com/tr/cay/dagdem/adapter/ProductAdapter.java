@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -54,7 +55,7 @@ public class ProductAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        View rowView = mInflater.inflate(R.layout.product_satir_layout, null);
+        final View rowView = mInflater.inflate(R.layout.product_satir_layout, null);
 
         final Product product = productList.get(position);
 
@@ -68,6 +69,44 @@ public class ProductAdapter extends BaseAdapter {
             public void onClick(View v) {
                 CheckBox cb = (CheckBox) v ;
                 product.setChecked(cb.isChecked());
+                if(!cb.isChecked())
+                {
+                    product.setSaleQuantity(0);
+                    EditText productCountText = (EditText) rowView.findViewById(R.id.productCount);
+                    productCountText.setText(""+product.getSaleQuantity());
+                }
+            }
+        });
+
+        Button increaseCountButton = (Button) rowView.findViewById(R.id.increaseProductCountButton);
+        increaseCountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                product.setSaleQuantity(product.getSaleQuantity()+1);
+                EditText productCountText = (EditText) rowView.findViewById(R.id.productCount);
+                productCountText.setText(""+product.getSaleQuantity());
+                CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.userSelected);
+                checkBox.setChecked(true);
+            }
+        });
+
+        Button decreaseCountButton = (Button) rowView.findViewById(R.id.decreaseProductCountButton);
+        decreaseCountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(product.getSaleQuantity()>0)
+                {
+                    product.setSaleQuantity(product.getSaleQuantity()-1);
+                    EditText productCountText = (EditText) rowView.findViewById(R.id.productCount);
+                    productCountText.setText(""+product.getSaleQuantity());
+                }
+                if(product.getSaleQuantity()==0)
+                {
+                    CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.userSelected);
+                    checkBox.setChecked(false);
+                }
             }
         });
 
@@ -88,7 +127,7 @@ public class ProductAdapter extends BaseAdapter {
             @Override
             public void afterTextChanged(Editable arg0)
             {
-                product.setQuantity(Integer.parseInt(arg0.toString()));
+                product.setSaleQuantity(Integer.parseInt(arg0.toString()));
             }
         });
         return rowView;

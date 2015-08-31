@@ -24,6 +24,8 @@ public class SalesMenuActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_menu);
+        getActionBar().hide();
+
         context = this.getApplicationContext();
         final Customer selectedCustomer = (Customer) getIntent().getSerializableExtra("selectedCustomer");
         Button  salesButton = (Button) findViewById(R.id.salesButton);

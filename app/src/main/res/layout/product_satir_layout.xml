@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
@@ -18,17 +17,35 @@
     android:id="@+id/isimsoyisim"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_weight="0.5"/>
+    android:layout_weight="0.5"
+    android:paddingTop="6dp"/>
 
 <EditText
     android:id="@+id/productCount"
     android:inputType="number"
-    android:layout_width="130dip"
-    android:layout_height="fill_parent"
+    android:maxLength="3"
+    android:layout_width="35dip"
+    android:layout_height="25dp"
     android:gravity="center"
-    android:layout_weight="0.5"
     android:layout_centerVertical="true"
     android:textAppearance="?android:attr/textAppearanceSmall"
     android:background="@drawable/quantity_text_design"/>
 
+<Button
+    android:id="@+id/increaseProductCountButton"
+    android:layout_width="22dp"
+    android:layout_height="21dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginTop="3dp"
+    android:clickable="true"
+    android:background="@drawable/plus"/>
+
+<Button
+    android:id="@+id/decreaseProductCountButton"
+    android:layout_width="22dp"
+    android:layout_height="21dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginTop="3dp"
+    android:background="@drawable/minus"/>
 </LinearLayout>

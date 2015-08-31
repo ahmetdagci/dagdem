@@ -14,11 +14,13 @@ import android.widget.ListView;
 
 import com.tr.cay.dagdem.R;
 import com.tr.cay.dagdem.adapter.ProductAdapter;
+import com.tr.cay.dagdem.enums.ProductType;
 import com.tr.cay.dagdem.model.Customer;
 import com.tr.cay.dagdem.model.Product;
 import com.tr.cay.dagdem.views.AbstractActivity;
 import com.tr.cay.dagdem.wrapper.ProductAdapterWrapper;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -40,6 +42,8 @@ public class TeaActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tea);
         getActionBar().hide();
+
+        new HttpRequestTask().execute();
 
         final ListView teaProductListView = (ListView) findViewById(R.id.teaList);
 
@@ -68,7 +72,6 @@ public class TeaActivity extends AbstractActivity {
     protected void onStart()
     {
         super.onStart();
-        new HttpRequestTask().execute();
     }
 
 
@@ -107,11 +110,10 @@ public class TeaActivity extends AbstractActivity {
         protected  List<Product> doInBackground(Void... params) {
             List<Product> productList = new ArrayList<Product>();
             try {
-                final String url = "http://10.0.2.2:3131/dagdem-ws/products?productType=1";
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                Object productObjects[] = restTemplate.getForObject(url, Object[].class);
-                for(Object object:productObjects)
+                ResponseEntity<Object[]> responseEntity = restTemplate.postForEntity("http://10.0.2.2:3131/dagdem-ws/products", ProductType.CAY, Object[].class);
+                for(Object object:responseEntity.getBody())
                 {
 					Product product = new Product();
                     LinkedHashMap linkedHashMap = (LinkedHashMap)object;
@@ -134,7 +136,7 @@ public class TeaActivity extends AbstractActivity {
 						}
 						else if(entry.getKey().equals("quantity"))
 						{
-						    product.setQuantity((Integer)entry.getValue());
+						    product.setStockQuantity((Integer)entry.getValue());
 						}
 					}
                     productList.add(product);
